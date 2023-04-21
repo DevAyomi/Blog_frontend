@@ -1,6 +1,6 @@
 <script setup>
 import { mdiForwardburger, mdiBackburger, mdiMenu } from "@mdi/js";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import menuAside from "@/menuAside.js";
 import menuNavBar from "@/menuNavBar.js";
@@ -12,12 +12,30 @@ import NavBar from "@/components/NavBar.vue";
 import NavBarItemPlain from "@/components/NavBarItemPlain.vue";
 import AsideMenu from "@/components/AsideMenu.vue";
 import FooterBar from "@/components/FooterBar.vue";
+import axiosClient from "@/axios";
 
-useMainStore().setUser({
-  name: "John Doe",
-  email: "john@example.com",
-  avatar:
-    "https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&options[accessoriesChance]=93",
+const name = ref("")
+const email = ref("")
+
+const me = () => {
+  axiosClient.get('v1/me').then((res) => {
+    name.value = res.data.data.name
+    email.value = res.data.data.email
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+
+  useMainStore().setUser({
+      name: name,
+      email: email,
+      avatar:
+        "https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&options[accessoriesChance]=93",
+    });
+
+
+onMounted(() => {
+  me()
 });
 
 const layoutAsidePadding = "xl:pl-60";

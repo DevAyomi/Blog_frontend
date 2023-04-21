@@ -1,3 +1,4 @@
+<!-- eslint-disable prettier/prettier -->
 <script setup>
 import AsideMenuLayer from "@/components/AsideMenuLayer.vue";
 import OverlayLayer from "@/components/OverlayLayer.vue";
