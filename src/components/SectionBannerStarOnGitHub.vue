@@ -8,11 +8,11 @@ import { gradientBgPinkRed } from "@/colors";
 <template>
   <SectionBanner :class="gradientBgPinkRed">
     <h1 class="text-3xl text-white mb-6">
-      Like the project? Please star on <b>GitHub</b> ;-)
+      Proudly Developed by <b>Devayomi</b> ;-)
     </h1>
     <div>
       <BaseButton
-        href="https://github.com/justboil/admin-one-vue-tailwind"
+        href="https://github.com/devayomi"
         :icon="mdiGithub"
         label="GitHub"
         target="_blank"

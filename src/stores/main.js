@@ -7,6 +7,8 @@ export const useMainStore = defineStore("main", {
     userName: null,
     userEmail: null,
     userAvatar: null,
+    type: sessionStorage.getItem("TYPE"),
+    token: sessionStorage.getItem("TOKEN"),
 
     /* Field focus with ctrl+k (to register only once) */
     isFieldFocusRegistered: false,
@@ -23,7 +25,7 @@ export const useMainStore = defineStore("main", {
       if (payload.email) {
         this.userEmail = payload.email;
       }
-      if (payload.avatar) {
+      if(payload.avatar) {
         this.userAvatar = payload.avatar;
       }
     },

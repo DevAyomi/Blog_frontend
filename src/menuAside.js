@@ -6,81 +6,77 @@ import {
   mdiAlertCircle,
   mdiSquareEditOutline,
   mdiTable,
-  mdiViewList,
   mdiTelevisionGuide,
   mdiResponsive,
-  mdiPalette,
-  mdiReact,
 } from "@mdi/js";
+import { useMainStore } from "@/stores/main.js";
+import {ref} from "vue";
 
-export default [
-  {
-    to: "/dashboard",
-    icon: mdiMonitor,
-    label: "Dashboard",
-  },
-  {
-    to: "/tables",
-    label: "Tables",
-    icon: mdiTable,
-  },
-  {
-    to: "/forms",
-    label: "Forms",
-    icon: mdiSquareEditOutline,
-  },
-  {
-    to: "/ui",
-    label: "UI",
-    icon: mdiTelevisionGuide,
-  },
-  {
-    to: "/responsive",
-    label: "Responsive",
-    icon: mdiResponsive,
-  },
-  {
-    to: "/",
-    label: "Styles",
-    icon: mdiPalette,
-  },
-  {
-    to: "/profile",
-    label: "Profile",
-    icon: mdiAccountCircle,
-  },
-  {
-    to: "/login",
-    label: "Login",
-    icon: mdiLock,
-  },
-  {
-    to: "/error",
-    label: "Error",
-    icon: mdiAlertCircle,
-  },
-  {
-    label: "Dropdown",
-    icon: mdiViewList,
-    menu: [
-      {
-        label: "Item One",
-      },
-      {
-        label: "Item Two",
-      },
-    ],
-  },
-  {
-    href: "https://github.com/justboil/admin-one-vue-tailwind",
-    label: "GitHub",
-    icon: mdiGithub,
-    target: "_blank",
-  },
-  {
-    href: "https://github.com/justboil/admin-one-react-tailwind",
-    label: "React version",
-    icon: mdiReact,
-    target: "_blank",
-  },
-];
+
+const admin = [{
+  to: "/dashboard",
+  icon: mdiMonitor,
+  label: "Dashboard",
+},
+{
+  to: "/forms",
+  label: "Categories",
+  icon: mdiSquareEditOutline,
+},
+{
+  to: "/tags",
+  label: "Tags",
+  icon: mdiSquareEditOutline,
+},
+{
+  to: "/ui",
+  label: "UI",
+  icon: mdiTelevisionGuide,
+},
+{
+  to: "/responsive",
+  label: "Responsive",
+  icon: mdiResponsive,
+},
+{
+  to: "/profile",
+  label: "Profile",
+  icon: mdiAccountCircle,
+}];
+
+const writer = [{
+  to: "/dashboard",
+  icon: mdiMonitor,
+  label: "Dashboard",
+},
+{
+  to: "/tables",
+  label: "Tables",
+  icon: mdiTable,
+},
+{
+  to: "/",
+  label: "Login",
+  icon: mdiLock,
+},
+{
+  to: "/error",
+  label: "Error",
+  icon: mdiAlertCircle,
+},
+{
+  to: "/error",
+  label: "Error",
+  icon: mdiAlertCircle,
+}]
+
+const type = ref("")
+
+if(sessionStorage.getItem('TYPE') == 'admin'){
+  type.value = admin
+}else{
+  type.value = writer
+}
+
+console.log(type.value)
+export default type.value;
