@@ -29,14 +29,9 @@ const admin = [{
   icon: mdiSquareEditOutline,
 },
 {
-  to: "/ui",
-  label: "UI",
-  icon: mdiTelevisionGuide,
-},
-{
-  to: "/responsive",
-  label: "Responsive",
-  icon: mdiResponsive,
+  to: "/manage-writers",
+  label: "Manage Writer",
+  icon: mdiSquareEditOutline,
 },
 {
   to: "/profile",

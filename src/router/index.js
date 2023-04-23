@@ -59,6 +59,14 @@ const routes = [
   },
   {
     meta: {
+      title: "Manage Writers",
+    },
+    path: "/manage-writers",
+    name: "manage-writers",
+    component: () => import("@/views/ManageWriter.vue"),
+  },
+  {
+    meta: {
       title: "Tagss",
     },
     path: "/tags",
