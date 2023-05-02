@@ -8,18 +8,25 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@chenfengyuan/vue-carousel": "^2.0.0",
+    "@ckeditor/ckeditor5-build-classic": "^37.1.0",
+    "@ckeditor/ckeditor5-vue": "^5.1.0",
+    "@coreui/coreui": "^4.2.6",
+    "@coreui/vue": "^4.8.1",
     "@mdi/js": "^7.0.96",
     "@rushstack/eslint-patch": "^1.1.4",
     "axios": "^0.27.0",
+    "bootstrap": "^5.2.3",
+    "bootstrap-vue": "^2.23.1",
     "chart.js": "^3.6.0",
+    "jquery": "^3.6.4",
     "laravel-vue-pagination": "^4.1.0",
     "numeral": "^2.0.6",
     "pinia": "^2.0.13",
-    "swiper": "^9.2.3",
-    "vue": "^3.0.0",
+    "vue": "^3.2.47",
     "vue-router": "^4.0.0",
     "vue-sweetalert2": "^5.0.5",
-    "vue3-carousel": "^0.3.0"
+    "vue-template-compiler": "^2.7.14"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

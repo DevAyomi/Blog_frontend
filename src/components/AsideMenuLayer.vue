@@ -1,10 +1,15 @@
 <script setup>
 import { mdiLogout, mdiClose } from "@mdi/js";
-import { computed } from "vue";
+import { computed, ref, inject } from "vue";
 import { useStyleStore } from "@/stores/style.js";
 import AsideMenuList from "@/components/AsideMenuList.vue";
 import AsideMenuItem from "@/components/AsideMenuItem.vue";
 import BaseIcon from "@/components/BaseIcon.vue";
+import axiosClient from "@/axios";
+import { useRouter } from "vue-router";
+
+
+const swal = inject('$swal')
 
 defineProps({
   menu: {
@@ -12,6 +17,22 @@ defineProps({
     required: true,
   },
 });
+
+const showSuccessAlert = (message) => {
+  swal.fire({
+  title: 'Are you sure?',
+  text: message,
+  icon: 'info',
+  confirmButtonColor: '#3085d6',
+  confirmButtonText: 'Done'
+}).then((result) => {
+  if (result.isConfirmed) {
+    location.reload()
+  }
+})
+}
+
+const router = useRouter();
 
 const emit = defineEmits(["menu-click", "aside-lg-close-click"]);
 
@@ -23,6 +44,29 @@ const logoutItem = computed(() => ({
   color: "info",
   isLogout: true,
 }));
+
+const logouLoading = computed(() => ({
+  label: "Loading.....",
+  icon: mdiLogout,
+  color: "info",
+  isLogout: true,
+}));
+
+const loading = ref(false);
+
+const logout = () => {
+  loading.value = true
+  axiosClient.post('v1/logout').then((res) => {
+    sessionStorage.removeItem('TOKEN')
+    router.push({
+      name: "login",
+    });
+    showSuccessAlert("Are you sure you want to log out")
+  }).catch((err) => {
+    alert(err)
+    logouLoading.value = false;
+  });
+}
 
 const menuClick = (event, item) => {
   emit("menu-click", event, item);
@@ -70,7 +114,8 @@ const asideLgCloseClick = (event) => {
       </div>
 
       <ul>
-        <AsideMenuItem :item="logoutItem" @menu-click="menuClick" />
+        <AsideMenuItem @click="logout" :item="logouLoading" v-if="loading" />
+        <AsideMenuItem @click="logout" :item="logoutItem" v-else />
       </ul>
     </div>
   </aside>

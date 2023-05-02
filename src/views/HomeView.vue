@@ -1,12 +1,14 @@
 <script setup>
-import { computed, ref, onMounted,inject } from "vue";
+import { computed, ref, onMounted, inject } from "vue";
 import { useMainStore } from "@/stores/main";
 import {
   mdiAccountMultiple,
   mdiCartOutline,
   mdiChartTimelineVariant,
   mdiGithub,
-  mdiBallotOutline, mdiAccount, mdiMail,
+  mdiBallotOutline,
+  mdiAccount,
+  mdiMail,
 } from "@mdi/js";
 import SectionMain from "@/components/SectionMain.vue";
 import CardBoxWidget from "@/components/CardBoxWidget.vue";
@@ -18,45 +20,52 @@ import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.
 import SectionBannerStarOnGitHub from "@/components/SectionBannerStarOnGitHub.vue";
 import axiosClient from "@/axios";
 
-const swal = inject('$swal')
+const swal = inject("$swal");
 
 //Define function to declare error
 const showFailureAlert = (message) => {
   swal.fire({
-    icon: 'error',
-    title: 'Ooops...',
+    icon: "error",
+    title: "Ooops...",
     text: message,
-    footer: '<a href="">Why do I have this issue?</a>'
-  })
-}
+    footer: '<a href="">Why do I have this issue?</a>',
+  });
+};
 
 const loading = ref(false);
 const allWriters = ref("");
 const allArticles = ref("");
-const allCategories = ref("")
+const allCategories = ref("");
 const tags = ref("");
-const writers = ref("")
+const writers = ref("");
 
 const getDashboardData = () => {
   loading.value = true;
 
-  axiosClient.get('/v1/admin-dashboard').then((res) => {
-    loading.value = false
-    allWriters.value = res.data.data.allUsersCount;
-    allArticles.value = res.data.data.allArticlesCount;
-    allCategories.value = res.data.data.allCategoriesCount;
-    tags.value = res.data.data.tags;
-    writers.value = res.data.data.users;
-    console.log(res)
-  }).catch((err) => {
-    loading.value = false
-    showFailureAlert(err)
-  })
-}
+  axiosClient
+    .get("/v1/admin-dashboard")
+    .then((res) => {
+      loading.value = false;
+      allWriters.value = res.data.data.allUsersCount;
+      allArticles.value = res.data.data.allArticlesCount;
+      allCategories.value = res.data.data.allCategoriesCount;
+      tags.value = res.data.data.tags;
+      writers.value = res.data.data.users;
+      console.log(res);
+    })
+    .catch((err) => {
+      loading.value = false;
+      showFailureAlert(err);
+    });
+};
 
 const getFirstTen = (str) => {
-  return str.split(/\s+/).slice(0, 4).join(" ");
-}
+  if (str !== "") {
+    return str.split(/\s+/).slice(0, 4).join(" ");
+  } else {
+    return str;
+  }
+};
 
 onMounted(() => {
   getDashboardData();
@@ -71,63 +80,73 @@ const transactionBarItems = computed(() => mainStore.history);
 
 <template>
   <LayoutAuthenticated>
-    <SectionMain v-if="loading" class="flex h-screen items-center justify-center">
-          <div
-      class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-primary opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
-      role="status">
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-        >Loading...</span
+    <SectionMain
+      v-if="loading"
+      class="flex h-screen items-center justify-center"
+    >
+      <div
+        class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-primary opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
+        role="status"
       >
-    </div>
-    <div
-      class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-secondary opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
-      role="status">
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-        >Loading...</span
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span
+        >
+      </div>
+      <div
+        class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-secondary opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
+        role="status"
       >
-    </div>
-    <div
-      class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-success opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
-      role="status">
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-        >Loading...</span
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span
+        >
+      </div>
+      <div
+        class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-success opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
+        role="status"
       >
-    </div>
-    <div
-      class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-danger opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
-      role="status">
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-        >Loading...</span
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span
+        >
+      </div>
+      <div
+        class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-danger opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
+        role="status"
       >
-    </div>
-    <div
-      class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-warning opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
-      role="status">
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-        >Loading...</span
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span
+        >
+      </div>
+      <div
+        class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-warning opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
+        role="status"
       >
-    </div>
-    <div
-      class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-info opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
-      role="status">
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-        >Loading...</span
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span
+        >
+      </div>
+      <div
+        class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-info opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
+        role="status"
       >
-    </div>
-    <div
-  class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-neutral-100 opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
-  role="status">
-  <span
-    class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-    >Loading...</span
-  >
-</div>
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span
+        >
+      </div>
+      <div
+        class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-neutral-100 opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite]"
+        role="status"
+      >
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span
+        >
+      </div>
     </SectionMain>
     <SectionMain v-else>
       <SectionTitleLineWithButton
@@ -152,7 +171,7 @@ const transactionBarItems = computed(() => mainStore.history);
           trend-type="up"
           color="text-emerald-500"
           :icon="mdiAccountMultiple"
-          :number=allWriters
+          :number="allWriters"
           label="All Writers"
         />
         <CardBoxWidget
@@ -160,7 +179,7 @@ const transactionBarItems = computed(() => mainStore.history);
           trend-type="up"
           color="text-blue-500"
           :icon="mdiAccount"
-          :number=allArticles
+          :number="allArticles"
           label="All Articles"
         />
         <CardBoxWidget
@@ -168,7 +187,7 @@ const transactionBarItems = computed(() => mainStore.history);
           trend-type="alert"
           color="text-red-500"
           :icon="mdiBallotOutline"
-          :number=allCategories
+          :number="allCategories"
           label="All Categories"
         />
       </div>
@@ -180,7 +199,7 @@ const transactionBarItems = computed(() => mainStore.history);
             v-for="client in tags"
             :key="client.id"
             :name="client.name"
-            :date="getFirstTen(client.description)"
+            :date="client.description"
             :progress="client.count"
           />
         </div>

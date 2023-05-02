@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
     >
       <UserAvatarCurrentUser
         v-if="item.isCurrentUser"
-        class="w-6 h-6 mr-3 inline-flex"
+        class="w-12 h-12 mr-3 inline-flex"
       />
       <BaseIcon v-if="item.icon" :path="item.icon" class="transition-colors" />
       <span

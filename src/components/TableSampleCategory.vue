@@ -8,7 +8,7 @@ import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import UserAvatar from "@/components/UserAvatar.vue";
-import PreloaderComponent from "./PreloaderComponent.vue";
+import PreloaderComponent from "@/components/PreloaderComponent.vue";
 import axiosClient from "@/axios";
 import { TailwindPagination } from 'laravel-vue-pagination';
 
@@ -178,7 +178,7 @@ const checked = (isChecked, client) => {
 <template>
   <CardBoxModal v-model="isModalActive" title="Show Category">
     <div v-if="loading">
-      <PreloaderComponent></PreloaderComponent>
+      <PreloaderComponent />
     </div>
     <div v-else>
       <h5>Title</h5>

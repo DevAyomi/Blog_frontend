@@ -8,6 +8,7 @@ import {
   mdiTable,
   mdiTelevisionGuide,
   mdiResponsive,
+  mdiViewList
 } from "@mdi/js";
 import { useMainStore } from "@/stores/main.js";
 import {ref} from "vue";
@@ -34,36 +35,54 @@ const admin = [{
   icon: mdiSquareEditOutline,
 },
 {
+  label: "Articles",
+  icon: mdiViewList,
+  menu: [
+    {
+      to: "/create-post",
+      label: "Create",
+      icon: mdiViewList,
+    },
+    {
+      to: "/all-posts",
+      label: "All",
+      icon: mdiTelevisionGuide,
+    },
+  ]
+},
+{
   to: "/profile",
   label: "Profile",
   icon: mdiAccountCircle,
 }];
 
 const writer = [{
-  to: "/dashboard",
+  to: "/writers-dashboard",
   icon: mdiMonitor,
   label: "Dashboard",
 },
 {
-  to: "/tables",
-  label: "Tables",
-  icon: mdiTable,
+  label: "Articles",
+  icon: mdiViewList,
+  menu: [
+    {
+      to: "/create-post",
+      label: "Create",
+      icon: mdiViewList,
+    },
+    {
+      to: "/all-writter-posts",
+      label: "All",
+      icon: mdiTelevisionGuide,
+    },
+  ]
 },
 {
-  to: "/",
-  label: "Login",
-  icon: mdiLock,
-},
-{
-  to: "/error",
-  label: "Error",
-  icon: mdiAlertCircle,
-},
-{
-  to: "/error",
-  label: "Error",
-  icon: mdiAlertCircle,
-}]
+  to: "/writer-profile",
+  label: "Profile",
+  icon: mdiAccountCircle,
+}];
+
 
 const type = ref("")
 

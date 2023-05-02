@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, computed, ref, inject,reactive } from "vue";
+import { onMounted, computed, ref, inject, reactive } from "vue";
 import { useMainStore } from "@/stores/main";
 import { mdiEye, mdiTrashCan, mdiPencil } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
@@ -10,7 +10,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import UserAvatar from "@/components/UserAvatar.vue";
 import PreloaderComponent from "./PreloaderComponent.vue";
 import axiosClient from "@/axios";
-import { TailwindPagination } from 'laravel-vue-pagination';
+import { TailwindPagination } from "laravel-vue-pagination";
 
 defineProps({
   checkable: Boolean,
@@ -21,50 +21,54 @@ const form = reactive({
   description: "",
 });
 
-const swal = inject('$swal')
+const swal = inject("$swal");
 
 //Define function to declare error
 const showFailureAlert = (message) => {
   swal.fire({
-    icon: 'error',
-    title: 'Ooops...',
+    icon: "error",
+    title: "Ooops...",
     text: message,
-    footer: '<a href="">Why do I have this issue?</a>'
-  })
-}
+    footer: '<a href="">Why do I have this issue?</a>',
+  });
+};
 
 //Define an  function to show success of an event
 const showSuccessAlert = (message) => {
-  swal.fire({
-  title: 'Query successful',
-  text: message,
-  icon: 'success',
-  confirmButtonColor: '#3085d6',
-  confirmButtonText: 'Done'
-}).then((result) => {
-  if (result.isConfirmed) {
-    location.reload()
-  }
-})
-}
+  swal
+    .fire({
+      title: "Query successful",
+      text: message,
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Done",
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        location.reload();
+      }
+    });
+};
 
-const allCategories = ref("")
+const allCategories = ref("");
 
 const getAllTags = (page = 1) => {
-  loading.value = true;
-  axiosClient.get(`/v1/tags?page=${page}`).then((res) => {
-    loading.value = false;
-    allCategories.value = res.data.data
-    console.log(allCategories.value)
-  }).catch((err) => {
-    loading.value = false;
-    showFailureAlert("Something went wrong");
-  })
-}
+  axiosClient
+    .get(`/v1/tags?page=${page}`)
+    .then((res) => {
+      loading.value = false;
+      allCategories.value = res.data.data;
+      console.log(allCategories.value);
+    })
+    .catch((err) => {
+      loading.value = false;
+      showFailureAlert("Something went wrong");
+    });
+};
 
 onMounted(() => {
-  getAllTags()
-})
+  getAllTags();
+});
 
 const mainStore = useMainStore();
 
@@ -80,77 +84,87 @@ const checkedRows = ref([]);
 
 const loading = ref(false);
 
-const loadingButton = ref(false)
+const loadingButton = ref(false);
 
 const getFirstTen = (str) => {
   return str.split(/\s+/).slice(0, 4).join(" ");
-}
+};
 
 const show = (id) => {
   isModalActive.value = true;
   loading.value = true;
-  axiosClient.get(`/v1/tags/${id}`).then((res) => {
-    loading.value = false
-    showCategory.value = res.data.data
-  }).catch((err) => {
-    loading.value = false
-    showFailureAlert("Something went wrong");
-    console.log(err)
-  })
-}
+  axiosClient
+    .get(`/v1/tags/${id}`)
+    .then((res) => {
+      loading.value = false;
+      showCategory.value = res.data.data;
+    })
+    .catch((err) => {
+      loading.value = false;
+      showFailureAlert("Something went wrong");
+      console.log(err);
+    });
+};
 
 const edit = (id) => {
   isModalEditActive.value = true;
   loading.value = true;
-  axiosClient.get(`/v1/tags/${id}`).then((res) => {
-    loading.value = false
-    showCategory.value = res.data.data
-    form.name = res.data.data.name
-    form.description = res.data.data.description
-  }).catch((err) => {
-    loading.value = false
-    showFailureAlert(err);
-    console.log(err)
-  })
-}
+  axiosClient
+    .get(`/v1/tags/${id}`)
+    .then((res) => {
+      loading.value = false;
+      showCategory.value = res.data.data;
+      form.name = res.data.data.name;
+      form.description = res.data.data.description;
+    })
+    .catch((err) => {
+      loading.value = false;
+      showFailureAlert(err);
+      console.log(err);
+    });
+};
 
 const saveEdit = (id) => {
-  loadingButton.value = true
-  axiosClient.put(`/v1/tags/${id}`,form).then((res) => {
-    console.log(res)
-    showSuccessAlert("You have successfully edited a category")
-  }).catch((err) => {
-    loadingButton.value = false
-    console.log(err);
-  })
-}
+  loadingButton.value = true;
+  axiosClient
+    .put(`/v1/tags/${id}`, form)
+    .then((res) => {
+      console.log(res);
+      showSuccessAlert("You have successfully edited a category");
+    })
+    .catch((err) => {
+      loadingButton.value = false;
+      console.log(err);
+    });
+};
 
 const del = (id) => {
-  swal.fire({
-  title: 'Are you sure?',
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
-}).then((result) => {
-  if (result.isConfirmed) {
-    axiosClient.delete(`/v1/tags/${id}`).then(() => {
-      swal.fire(
-        'Deleted!',
-        'Your file has been deleted.',
-        'success'
-      )
-      setTimeout(() => {
-        location.reload()
-      },2000)
-    }).catch((err) => {
-      showFailureAlert("something went wrong");
+  swal
+    .fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     })
-  }
-})
-}
+    .then((result) => {
+      if (result.isConfirmed) {
+        axiosClient
+          .delete(`/v1/tags/${id}`)
+          .then(() => {
+            swal.fire("Deleted!", "Your file has been deleted.", "success");
+            setTimeout(() => {
+              location.reload();
+            }, 2000);
+          })
+          .catch((err) => {
+            showFailureAlert("something went wrong");
+          });
+      }
+    });
+};
 
 const remove = (arr, cb) => {
   const newArr = [];
@@ -183,10 +197,10 @@ const checked = (isChecked, client) => {
     </div>
     <div v-else>
       <h5>Title</h5>
-    <p class="mb-4">{{ showCategory.name }}</p>
+      <p class="mb-4">{{ showCategory.name }}</p>
 
-    <h5>Description</h5>
-    <p>{{ showCategory.description }}</p>
+      <h5>Description</h5>
+      <p>{{ showCategory.description }}</p>
     </div>
   </CardBoxModal>
 
@@ -196,36 +210,62 @@ const checked = (isChecked, client) => {
     </div>
     <div v-else>
       <div class="mb-6">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-        Title
-      </label>
-      <input v-model="form.name" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+          Title
+        </label>
+        <input
+          v-model="form.name"
+          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+        />
       </div>
-    
+
       <div class="mb-6">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-        Description
-      </label>
-      <input v-model="form.description" class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+          Description
+        </label>
+        <input
+          v-model="form.description"
+          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+        />
       </div>
 
       <div class="flex items-center">
-        <button @click="isModalEditActive = false" class="flex-1 mx-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        <button
+          @click="isModalEditActive = false"
+          class="flex-1 mx-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        >
           Cancel
         </button>
 
-        <button v-if="loadingButton" class="flex-1 mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button
+          v-if="loadingButton"
+          class="flex-1 mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
           <svg class="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
           </svg>
           Loading
         </button>
-        <button v-else @click="saveEdit(showCategory.id)" class="flex-1 mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button
+          v-else
+          @click="saveEdit(showCategory.id)"
+          class="flex-1 mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
           Save
         </button>
       </div>
-
     </div>
   </CardBoxModal>
 
@@ -255,7 +295,7 @@ const checked = (isChecked, client) => {
         <th v-if="checkable" />
         <th />
         <th>Name</th>
-        <th>Description</th>
+        <th>Use count</th>
         <th>Progress</th>
         <th>Created_at</th>
         <th>Actions</th>
@@ -283,7 +323,7 @@ const checked = (isChecked, client) => {
           {{ client.name }}
         </td>
         <td data-label="Description">
-          {{ getFirstTen(client.description) }}
+          {{ client.count }}
         </td>
         <td data-label="Progress" class="lg:w-32">
           <progress
@@ -328,8 +368,8 @@ const checked = (isChecked, client) => {
   </table>
   <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-slate-800">
     <TailwindPagination
-        :data="allCategories"
-        @pagination-change-page="getAllCategories"
+      :data="allCategories"
+      @pagination-change-page="getAllCategories"
     />
   </div>
 </template>

@@ -10,7 +10,8 @@ const routes = [
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
     meta: {
       title: "Dashboard",
-      requiresAuth: true
+      requiresAuth: true,
+      Admin: true,
     },
     path: "/dashboard",
     name: "dashboard",
@@ -19,10 +20,11 @@ const routes = [
   {
     meta: {
       title: "Writers Dashboard",
-      requiresAuth: true
+      requiresAuth: true,
+      Writer: true,
     },
     path: "/writers-dashboard",
-    name: "writers-dashboard",
+    name: "writer-dashboard",
     component: () => import("@/views/WritersDashboard.vue"),
   },
   {
@@ -35,11 +37,27 @@ const routes = [
   },
   {
     meta: {
+      title: "Category Post",
+    },
+    path: "/category-post/:id",
+    name: "category-post",
+    component: () => import("@/views/CategoryPostView.vue"),
+  },
+  {
+    meta: {
       title: "Landing",
     },
     path: "/landing-page",
     name: "landing-page",
     component: () => import("@/views/LandingView.vue"),
+  },
+  {
+    meta: {
+      title: "SinglePage",
+    },
+    path: "/single-page/:id",
+    name: "single-page",
+    component: () => import("@/views/SinglePost.vue"),
   },
   {
     meta: {
@@ -60,6 +78,7 @@ const routes = [
   {
     meta: {
       title: "Manage Writers",
+      Admin: true,
     },
     path: "/manage-writers",
     name: "manage-writers",
@@ -68,10 +87,43 @@ const routes = [
   {
     meta: {
       title: "Tagss",
+      title: "Tags",
     },
     path: "/tags",
     name: "tags",
     component: () => import("@/views/TagsView.vue"),
+  },
+  {
+    meta: {
+      title: "Create Post",
+    },
+    path: "/create-post",
+    name: "create-post",
+    component: () => import("@/views/CreatePost.vue"),
+  },
+  {
+    meta: {
+      title: "All Posts",
+    },
+    path: "/all-posts",
+    name: "all-posts",
+    component: () => import("@/views/AllPosts.vue"),
+  },
+  {
+    meta: {
+      title: "All Writer Posts",
+    },
+    path: "/all-writter-posts",
+    name: "all-writter-posts",
+    component: () => import("@/views/AllWriterPost.vue"),
+  },
+  {
+    meta: {
+      title: "Edit Post",
+    },
+    path: "/edit-post/:id",
+    name: "edit-post",
+    component: () => import("@/views/EditPost.vue"),
   },
   {
     meta: {
@@ -80,6 +132,14 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: () => import("@/views/ProfileView.vue"),
+  },
+  {
+    meta: {
+      title: "Profile",
+    },
+    path: "/writer-profile",
+    name: "writer-profile",
+    component: () => import("@/views/WriterProfile.vue"),
   },
   {
     meta: {
@@ -100,7 +160,7 @@ const routes = [
   {
     meta: {
       title: "Login",
-      isGuest: true
+      isGuest: true,
     },
     path: "/",
     name: "login",
@@ -128,17 +188,27 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && useMainStore().token == null) {
     next({ name: "login" });
   } else if (useMainStore().token && to.meta.isGuest) {
-    if(useMainStore().userType == 'writer'){
-       next({ name: "writer-dashboard" });
-    }else{
-       next({ name: "dashboard" });
+    if (useMainStore().type == "writer") {
+      next({ name: "writer-dashboard" });
+    } else {
+      next({ name: "dashboard" });
     }
-  }else if(to.meta.Admin && useMainStore().type == "writer"){
-     next({ name: "writers-dashboard" });
-  }else if(to.meta.Client && useMainStore().type == "admin"){
+  } else if (to.meta.Admin && useMainStore().type == "writer") {
+    next({ name: "writers-dashboard" });
+  } else if (to.meta.Writer && useMainStore().type == "admin") {
     next({ name: "dashboard" });
-  }else{
-    next()
+  } else {
+    next();
+  }
+});
+
+let hasReloaded = false;
+
+router.afterEach((to, from) => {
+  if (!hasReloaded) {
+    hasReloaded = true;
+  } else {
+    location.reload(); // guard condition to prevent infinite reload
   }
 });
 

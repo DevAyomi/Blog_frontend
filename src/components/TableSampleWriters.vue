@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, computed, ref, inject,reactive } from "vue";
 import { useMainStore } from "@/stores/main";
-import { mdiEye, mdiTrashCan, mdiPencil, mdiCancel } from "@mdi/js";
+import { mdiEye, mdiTrashCan, mdiPencil, mdiCancel, mdiSetRight } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -306,7 +306,7 @@ const checked = (isChecked, client) => {
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
               color="success"
-              :icon="mdiPencil"
+              :icon=" mdiSetRight"
               small
               @click="approve(client.id)"
             />

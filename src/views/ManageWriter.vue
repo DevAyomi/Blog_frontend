@@ -58,12 +58,14 @@ const submit = () => {
   }else if(form.password_confirmation == ""){
     loading.value = false;
     showFailureAlert("Confirm password field cannot be empty")
+  }else if(form.password !== form.password_confirmation){
+    showFailureAlert("Password and confirm password doesnt match");
   }else if(form.phone_no == ""){
     loading.value = false;
     showFailureAlert("Phone number cannot be empty")
   }else{
     loading.value = true;
-    axiosClient.post('/v1/writers', form).then((res) => {
+    axiosClient.post('/v1/create-writer', form).then((res) => {
       loading.value = false;
       showSuccessAlert("Writer created successfully")
       setTimeout(() => {
@@ -71,7 +73,7 @@ const submit = () => {
       }, 3000);
     }).catch((err) => {
       loading.value = false;
-      showFailureAlert("Something went wrong comrade")
+      showFailureAlert(err.response.data.message)
     })
   }
 };
@@ -125,7 +127,7 @@ const submit = () => {
 
 
     <SectionMain>
-      <SectionTitleLineWithButton :icon="mdiTableBorder" title="Categories table" main>
+      <SectionTitleLineWithButton :icon="mdiTableBorder" title="Writers table" main>
        
       </SectionTitleLineWithButton>
     
